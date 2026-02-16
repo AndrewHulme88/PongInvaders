@@ -48,5 +48,14 @@ public class Ball : MonoBehaviour
         {
             ResetBall();
         }
+
+        if(collision.gameObject.CompareTag("Player"))
+        {
+            float hitPoint = transform.position.x - collision.transform.position.x;
+            float paddleWidth = collision.collider.bounds.size.x / 2f;
+            float paddleAngle = hitPoint / paddleWidth;
+
+            rb.linearVelocity = new Vector2(paddleAngle, 1f).normalized * speed;
+        }
     }
 }
