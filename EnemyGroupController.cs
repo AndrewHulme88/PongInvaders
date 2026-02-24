@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class EnemyGroupController : MonoBehaviour
 {
@@ -9,11 +10,27 @@ public class EnemyGroupController : MonoBehaviour
     [SerializeField] private float rightBoundary = 8f;
     [SerializeField] private float changeDirectionDelay = 0.25f;
     [SerializeField] private float initialDelay = 0.15f;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private float shootInterval = 2f;
 
     private Vector2 moveDirection = Vector2.right;
+    private float shootTimer;
 
     void Update()
     {
+        if (bulletPrefab == null)
+        {
+            return;
+        }
+
+        shootTimer += Time.deltaTime;
+
+        if (shootTimer >= shootInterval)
+        {
+            Shoot();
+            shootTimer = 0f;
+        }
+
         transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
         CheckEdges();
     }
@@ -25,7 +42,7 @@ public class EnemyGroupController : MonoBehaviour
 
         foreach (Transform enemy in transform)
         {
-            if(enemy == null) continue;
+            if (enemy == null) continue;
 
             float x = enemy.position.x;
 
@@ -33,7 +50,7 @@ public class EnemyGroupController : MonoBehaviour
             if (x > rightEdge) rightEdge = x;
         }
 
-        if(rightEdge >= rightBoundary && moveDirection.x > 0)
+        if (rightEdge >= rightBoundary && moveDirection.x > 0)
         {
             MoveDown();
         }
@@ -46,7 +63,7 @@ public class EnemyGroupController : MonoBehaviour
 
     private void MoveDown()
     {
-        if(moveDirection.x > 0)
+        if (moveDirection.x > 0)
         {
             moveDirection = Vector2.zero;
             StartCoroutine(ChangeDirection(Vector2.left));
@@ -64,8 +81,34 @@ public class EnemyGroupController : MonoBehaviour
         moveDirection = new Vector2(0f, -moveDownAmount);
         yield return new WaitForSeconds(changeDirectionDelay);
         moveDirection = Vector2.zero;
-        //transform.position += new Vector3(moveDirection.x * 0.2f, -moveDownAmount, 0f);
         yield return new WaitForSeconds(initialDelay);
         moveDirection = direction;
+    }
+
+    private void Shoot()
+    {
+        List<Transform> shooters = GetBottomEnemies();
+
+        if (shooters.Count == 0) return;
+
+        Transform shooter = shooters[Random.Range(0, shooters.Count)];
+        Instantiate(bulletPrefab, shooter.position, Quaternion.identity);
+    }
+
+    List<Transform> GetBottomEnemies()
+    {
+        Dictionary<int, Transform> bottomEnemies = new Dictionary<int, Transform>();
+
+        foreach(Transform enemy in transform)
+        {
+            int column = Mathf.RoundToInt(enemy.position.x * 10f);
+
+            if(!bottomEnemies.ContainsKey(column) || enemy.position.y < bottomEnemies[column].position.y)
+            {
+                bottomEnemies[column] = enemy;
+            }
+        }
+
+        return new List<Transform>(bottomEnemies.Values);
     }
 }
