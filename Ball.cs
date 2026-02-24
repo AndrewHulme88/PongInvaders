@@ -57,5 +57,12 @@ public class Ball : MonoBehaviour
 
             rb.linearVelocity = new Vector2(paddleAngle, 1f).normalized * speed;
         }
+
+        //if(collision.gameObject.CompareTag("Enemy"))
+        //{
+        //    Vector2 v = rb.linearVelocity;
+        //    v.y = Mathf.Abs(v.y);
+        //    rb.linearVelocity = v.normalized * speed;
+        //}
     }
 }
