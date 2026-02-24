@@ -21,4 +21,20 @@ public class PlayerController : MonoBehaviour
     {
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("EnemyBullet"))
+        {
+            Ball ball = FindFirstObjectByType<Ball>();
+
+            if(ball != null)
+            {
+                ball.ResetBall();
+            }
+
+            GameManager.Instance.LoseLife();
+            Destroy(collision.gameObject);
+        }
+    }
 }

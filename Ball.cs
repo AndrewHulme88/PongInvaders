@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] Transform startPoint;
+    [SerializeField] private Transform ballStartPoint;
 
     public float speed = 5f;
     
@@ -11,6 +11,10 @@ public class Ball : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
         ResetBall();
     }
 
@@ -36,16 +40,17 @@ public class Ball : MonoBehaviour
         rb.linearVelocity = direction * speed;
     }
 
-    void ResetBall()
+    public void ResetBall()
     {
         rb.linearVelocity = Vector2.zero;
-        transform.position = startPoint.position;
+        transform.position = ballStartPoint.position;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Bottom"))
         {
+            GameManager.Instance.LoseLife();
             ResetBall();
         }
 
