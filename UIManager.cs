@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -62,6 +63,11 @@ public class UIManager : MonoBehaviour
 
         GameManager.Instance.SetState(GameManager.GameState.Playing);
         pausePanel.SetActive(false);
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void ShowGameOver()
