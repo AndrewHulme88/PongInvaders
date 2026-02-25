@@ -1,11 +1,14 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float invulnerabilityDuration = 0.75f;
 
     private Rigidbody2D rb;
     private float moveInput;
+    private bool isInvulnerable = false;
 
     private void Awake()
     {
@@ -24,8 +27,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("EnemyBullet"))
+        if (collision.CompareTag("EnemyBullet") && !isInvulnerable)
         {
+            StartCoroutine(HitRoutine());
+
             Ball ball = FindFirstObjectByType<Ball>();
 
             if(ball != null)
@@ -36,5 +41,12 @@ public class PlayerController : MonoBehaviour
             GameManager.Instance.LoseLife();
             Destroy(collision.gameObject);
         }
+    }
+
+    IEnumerator HitRoutine()
+    {
+        isInvulnerable = true;
+        yield return new WaitForSeconds(invulnerabilityDuration);
+        isInvulnerable = false;
     }
 }

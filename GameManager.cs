@@ -21,10 +21,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        UIManager.Instance.UpdateLives(playerLives);
+        UIManager.Instance.UpdateScore(score);
+    }
+
     public void LoseLife()
     {
         playerLives--;
-        Debug.Log("Player Lives: " + playerLives);
+        
+        UIManager.Instance.UpdateLives(playerLives);
+
         if (playerLives <= 0)
         {
             GameOver();
@@ -34,6 +42,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
+        UIManager.Instance.UpdateScore(score);
     }
 
     private void GameOver()

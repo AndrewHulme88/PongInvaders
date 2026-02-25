@@ -18,6 +18,11 @@ public class EnemyGroupController : MonoBehaviour
 
     void Update()
     {
+        if(transform.childCount == 0)
+        {
+            Debug.Log("All enemies defeated! You win!");
+        }
+
         if (bulletPrefab == null)
         {
             return;

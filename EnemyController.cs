@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField] int scoreValue = 100;
     public int health = 1;
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -22,7 +23,16 @@ public class EnemyController : MonoBehaviour
 
         if(health <= 0)
         {
+            GameManager.Instance.AddScore(scoreValue);
             Die();
+        }
+        else
+        {
+            Ball ball = FindFirstObjectByType<Ball>();
+            if (ball != null)
+            {
+
+            }
         }
     }
 
