@@ -38,12 +38,12 @@ public class GameManager : MonoBehaviour
             if (currentState == GameState.Playing)
             {
                 SetState(GameState.Paused);
-                //UIManager.Instance.ShowPauseMenu();
+                UIManager.Instance.ShowPauseScreen();
             }
             else if (currentState == GameState.Paused)
             {
                 SetState(GameState.Playing);
-                //UIManager.Instance.HidePauseMenu();
+                UIManager.Instance.HidePauseScreen();
             }
         }
     }

@@ -5,9 +5,10 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
+    [SerializeField] private GameObject pausePanel;
+
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI scoreText;
-    public 
 
     void Awake()
     {
@@ -19,6 +20,11 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        pausePanel.SetActive(false);
     }
 
     public void UpdateLives(int lives)
@@ -35,6 +41,27 @@ public class UIManager : MonoBehaviour
         {
             scoreText.text = "Score: " + score;
         }
+    }
+
+    public void ShowPauseScreen()
+    {
+        if (pausePanel == null)
+        {
+            return;
+        }
+
+        pausePanel.SetActive(true);
+    }
+
+    public void HidePauseScreen()
+    {
+        if (pausePanel == null)
+        {
+            return;
+        }
+
+        GameManager.Instance.SetState(GameManager.GameState.Playing);
+        pausePanel.SetActive(false);
     }
 
     public void ShowGameOver()
