@@ -17,6 +17,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(GameManager.Instance.currentState != GameManager.GameState.Playing)
+        {
+            return;
+        }
+
         moveInput = Input.GetAxisRaw("Horizontal");
     }
 

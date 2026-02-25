@@ -18,7 +18,12 @@ public class EnemyGroupController : MonoBehaviour
 
     void Update()
     {
-        if(transform.childCount == 0)
+        if (GameManager.Instance.currentState != GameManager.GameState.Playing)
+        {
+            return;
+        }
+
+        if (transform.childCount == 0)
         {
             Debug.Log("All enemies defeated! You win!");
         }

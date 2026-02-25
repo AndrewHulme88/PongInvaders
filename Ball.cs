@@ -20,7 +20,13 @@ public class Ball : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(rb.linearVelocity != Vector2.zero)
+        if(GameManager.Instance.currentState != GameManager.GameState.Playing)
+        {
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if (rb.linearVelocity != Vector2.zero)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * speed;
         }

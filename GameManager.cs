@@ -5,6 +5,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    public enum GameState { Playing, Paused, GameOver }
+
+    public GameState currentState;
     public int playerLives = 3;
     public int score = 0;
 
@@ -23,8 +26,26 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        SetState(GameState.Playing);
         UIManager.Instance.UpdateLives(playerLives);
         UIManager.Instance.UpdateScore(score);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentState == GameState.Playing)
+            {
+                SetState(GameState.Paused);
+                //UIManager.Instance.ShowPauseMenu();
+            }
+            else if (currentState == GameState.Paused)
+            {
+                SetState(GameState.Playing);
+                //UIManager.Instance.HidePauseMenu();
+            }
+        }
     }
 
     public void LoseLife()
@@ -35,7 +56,7 @@ public class GameManager : MonoBehaviour
 
         if (playerLives <= 0)
         {
-            GameOver();
+            SetState(GameState.GameOver);
         }
     }
 
@@ -45,8 +66,24 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateScore(score);
     }
 
-    private void GameOver()
+    public void SetState(GameState newState)
     {
-        Debug.Log("Game Over! Final Score: " + score);
+        currentState = newState;
+
+        switch (newState)
+        {
+            case GameState.Playing:
+                Time.timeScale = 1f;
+                break;
+
+            case GameState.Paused:
+                Time.timeScale = 0f;
+                break;
+
+            case GameState.GameOver:
+                Time.timeScale = 0f;
+                UIManager.Instance.ShowGameOver();
+                break;
+        }
     }
 }
