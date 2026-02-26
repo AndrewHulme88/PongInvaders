@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,22 @@ public class GameManager : MonoBehaviour
         SetState(GameState.Playing);
         UIManager.Instance.UpdateLives(playerLives);
         UIManager.Instance.UpdateScore(score);
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Time.timeScale = 1f;
+        SetState(GameState.Playing);
     }
 
     private void Update()
@@ -64,6 +81,12 @@ public class GameManager : MonoBehaviour
     {
         score += points;
         UIManager.Instance.UpdateScore(score);
+    }
+
+    public void LevelEnd()
+    {
+        SetState(GameState.Paused);
+        UIManager.Instance.ShowLevelEndScreen(score, playerLives);
     }
 
     public void SetState(GameState newState)

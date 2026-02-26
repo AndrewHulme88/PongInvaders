@@ -25,7 +25,7 @@ public class EnemyGroupController : MonoBehaviour
 
         if (transform.childCount == 0)
         {
-            Debug.Log("All enemies defeated! You win!");
+            GameManager.Instance.LevelEnd();
         }
 
         if (bulletPrefab == null)

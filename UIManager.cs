@@ -7,9 +7,12 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject levelEndPanel;
 
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI levelEndScoreText;
+    public TextMeshProUGUI levelEndLivesText;
 
     void Awake()
     {
@@ -63,6 +66,30 @@ public class UIManager : MonoBehaviour
 
         GameManager.Instance.SetState(GameManager.GameState.Playing);
         pausePanel.SetActive(false);
+    }
+
+    public void ShowLevelEndScreen(int score, int lives)
+    {
+        levelEndPanel.SetActive(true);
+        levelEndScoreText.text = "Score: " + score;
+        levelEndLivesText.text = "Lives: " + lives;
+    }
+
+    public void LoadNextLevel()
+    {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+        if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)
+        {
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(nextSceneIndex);
+            levelEndPanel.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("No more levels! Returning to main menu.");
+            LoadMainMenu();
+        }
     }
 
     public void LoadMainMenu()
