@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] private Transform ballStartPoint;
+    [SerializeField] Transform playerPaddle;
+    [SerializeField] Vector3 ballOffset;
 
     public float speed = 5f;
     
     private Rigidbody2D rb;
+    private bool isLaunched = false;
 
     private void Awake()
     {
@@ -34,22 +36,28 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
-        if(rb.linearVelocity == Vector2.zero && Input.GetKeyDown(KeyCode.Space))
+        if (!isLaunched)
         {
-            LaunchBall();
+            transform.position = playerPaddle.position + ballOffset;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                isLaunched = true;
+                LaunchBall();
+            }
         }
     }
 
     void LaunchBall()
     {
-        Vector2 direction = new Vector2(Random.Range(-0.5f, 0.5f), -1).normalized;
+        Vector2 direction = new Vector2(Random.Range(-0.5f, 0.5f), 1).normalized;
         rb.linearVelocity = direction * speed;
     }
 
     public void ResetBall()
     {
+        isLaunched = false;
         rb.linearVelocity = Vector2.zero;
-        transform.position = ballStartPoint.position;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
