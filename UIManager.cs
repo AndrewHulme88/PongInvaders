@@ -29,6 +29,8 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         pausePanel.SetActive(false);
+        UpdateLives(GameManager.Instance.playerLives);
+        UpdateScore(GameManager.Instance.score);
     }
 
     public void UpdateLives(int lives)
