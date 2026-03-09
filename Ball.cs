@@ -4,6 +4,7 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] Transform playerPaddle;
     [SerializeField] Vector3 ballOffset;
+    [SerializeField] float minYVelocity = 0.25f;
 
     public float speed = 5f;
     
@@ -77,11 +78,14 @@ public class Ball : MonoBehaviour
             rb.linearVelocity = new Vector2(paddleAngle, 1f).normalized * speed;
         }
 
-        //if(collision.gameObject.CompareTag("Enemy"))
-        //{
-        //    Vector2 v = rb.linearVelocity;
-        //    v.y = Mathf.Abs(v.y);
-        //    rb.linearVelocity = v.normalized * speed;
-        //}
+        Vector2 dir = rb.linearVelocity.normalized;
+
+        if(Mathf.Abs(dir.y) < minYVelocity)
+        {
+            dir.y = Mathf.Sign(dir.y == 0 ? 1f : dir.y) * minYVelocity;
+            dir.x = Mathf.Sign(dir.x) * Mathf.Sqrt(1f - dir.y * dir.y);
+
+            rb.linearVelocity = dir * speed;
+        }
     }
 }

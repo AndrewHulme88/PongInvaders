@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject levelEndPanel;
+    [SerializeField] private GameObject introText;
 
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI scoreText;
@@ -35,7 +36,15 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        if(levelEndPanel.activeSelf)
+        if(introText.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                introText.SetActive(false);
+            }
+        }
+
+        if (levelEndPanel.activeSelf)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
