@@ -89,6 +89,11 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowLevelEndScreen(score, playerLives);
     }
 
+    public void GameOver()
+    {
+        SceneManager.LoadScene("GameOver");
+    }
+
     public void SetState(GameState newState)
     {
         currentState = newState;
@@ -105,7 +110,7 @@ public class GameManager : MonoBehaviour
 
             case GameState.GameOver:
                 Time.timeScale = 0f;
-                UIManager.Instance.ShowGameOver();
+                GameOver();
                 break;
         }
     }

@@ -5,8 +5,12 @@ public class MainMenu : MonoBehaviour
 {
     public void StartGame()
     {
-        GameManager.Instance.score = 0;
-        GameManager.Instance.playerLives = 3;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.score = 0;
+            GameManager.Instance.playerLives = 3;
+        }
+
         SceneManager.LoadScene("Level_1");
     }
 

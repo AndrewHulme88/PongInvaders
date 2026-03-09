@@ -33,6 +33,17 @@ public class UIManager : MonoBehaviour
         UpdateScore(GameManager.Instance.score);
     }
 
+    private void Update()
+    {
+        if(levelEndPanel.activeSelf)
+        {
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                LoadNextLevel();
+            }
+        }
+    }
+
     public void UpdateLives(int lives)
     {
         if (livesText != null)
