@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -48,20 +49,17 @@ public class GameManager : MonoBehaviour
         SetState(GameState.Playing);
     }
 
-    private void Update()
+    public void OnPause()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if (currentState == GameState.Playing)
         {
-            if (currentState == GameState.Playing)
-            {
-                SetState(GameState.Paused);
-                UIManager.Instance.ShowPauseScreen();
-            }
-            else if (currentState == GameState.Paused)
-            {
-                SetState(GameState.Playing);
-                UIManager.Instance.HidePauseScreen();
-            }
+            SetState(GameState.Paused);
+            UIManager.Instance.ShowPauseScreen();
+        }
+        else if (currentState == GameState.Paused)
+        {
+            SetState(GameState.Playing);
+            UIManager.Instance.HidePauseScreen();
         }
     }
 

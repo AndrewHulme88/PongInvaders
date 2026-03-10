@@ -40,17 +40,12 @@ public class Ball : MonoBehaviour
         if (!isLaunched)
         {
             transform.position = playerPaddle.position + ballOffset;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                isLaunched = true;
-                LaunchBall();
-            }
         }
     }
 
-    void LaunchBall()
+    public void LaunchBall()
     {
+        isLaunched = true;
         Vector2 direction = new Vector2(Random.Range(-0.5f, 0.5f), 1).normalized;
         rb.linearVelocity = direction * speed;
     }

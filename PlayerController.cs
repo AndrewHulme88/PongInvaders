@@ -1,10 +1,12 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float invulnerabilityDuration = 0.75f;
+    [SerializeField] private Ball ball;
 
     private Rigidbody2D rb;
     private float moveInput;
@@ -21,13 +23,25 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-
-        moveInput = Input.GetAxisRaw("Horizontal");
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(moveInput * moveSpeed, 0f);
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        Vector2 input = context.ReadValue<Vector2>();
+        moveInput = input.x;
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed && ball != null)
+        {
+            ball.LaunchBall();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
