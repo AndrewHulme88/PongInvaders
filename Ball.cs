@@ -45,6 +45,11 @@ public class Ball : MonoBehaviour
 
     public void LaunchBall()
     {
+        if (isLaunched)
+        {
+            return;
+        }
+
         isLaunched = true;
         Vector2 direction = new Vector2(Random.Range(-0.5f, 0.5f), 1).normalized;
         rb.linearVelocity = direction * speed;

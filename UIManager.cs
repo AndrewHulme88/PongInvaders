@@ -7,13 +7,14 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [SerializeField] private GameObject pausePanel;
-    [SerializeField] private GameObject levelEndPanel;
     [SerializeField] private GameObject introText;
 
+    public GameObject levelEndPanel;
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelEndScoreText;
     public TextMeshProUGUI levelEndLivesText;
+    public bool isIntroTextRemoved = false;
 
     void Awake()
     {
@@ -34,22 +35,17 @@ public class UIManager : MonoBehaviour
         UpdateScore(GameManager.Instance.score);
     }
 
-    private void Update()
+    public void RemoveIntroText()
     {
-        if(introText.activeSelf)
+        if (isIntroTextRemoved)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                introText.SetActive(false);
-            }
+            return;
         }
 
-        if (levelEndPanel.activeSelf)
+        if (introText != null)
         {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                LoadNextLevel();
-            }
+            introText.SetActive(false);
+            isIntroTextRemoved = true;
         }
     }
 
@@ -71,7 +67,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowPauseScreen()
     {
-        if (pausePanel == null)
+        if (pausePanel == null || levelEndPanel.activeInHierarchy)
         {
             return;
         }

@@ -38,10 +38,27 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed && ball != null)
+        if(!context.performed)
+        {
+            return;
+        }
+
+        if(UIManager.Instance.levelEndPanel.activeInHierarchy)
+        {
+            UIManager.Instance.LoadNextLevel();
+            return;
+        }
+
+        if(UIManager.Instance.isIntroTextRemoved == false)
+        {
+            UIManager.Instance.RemoveIntroText();
+        }
+
+        if (ball != null)
         {
             ball.LaunchBall();
         }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
