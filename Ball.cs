@@ -5,6 +5,7 @@ public class Ball : MonoBehaviour
     [SerializeField] Transform playerPaddle;
     [SerializeField] Vector3 ballOffset;
     [SerializeField] float minYVelocity = 0.25f;
+    [SerializeField] GameObject hitParticles;
 
     public float speed = 5f;
     
@@ -71,11 +72,24 @@ public class Ball : MonoBehaviour
 
         if(collision.gameObject.CompareTag("Player"))
         {
+            if(isLaunched)
+            {
+                Instantiate(hitParticles, transform.position, Quaternion.identity);
+            }
+
             float hitPoint = transform.position.x - collision.transform.position.x;
             float paddleWidth = collision.collider.bounds.size.x / 2f;
             float paddleAngle = hitPoint / paddleWidth;
 
             rb.linearVelocity = new Vector2(paddleAngle, 1f).normalized * speed;
+        }
+
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            if(isLaunched)
+            {
+                Instantiate(hitParticles, transform.position, Quaternion.identity);
+            }
         }
 
         Vector2 dir = rb.linearVelocity.normalized;
