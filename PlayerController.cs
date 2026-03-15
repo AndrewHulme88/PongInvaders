@@ -12,10 +12,16 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private float moveInput;
     private bool isInvulnerable = false;
+    private AudioSource hitSound;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        hitSound = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -66,6 +72,7 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("EnemyBullet") && !isInvulnerable)
         {
+            hitSound.Play();
             FindFirstObjectByType<CameraController>().ShakeCamera();
             StartCoroutine(HitRoutine());
 

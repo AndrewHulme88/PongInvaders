@@ -6,11 +6,19 @@ public class EnemyController : MonoBehaviour
     [SerializeField] GameObject hitParticles;
 
     public int health = 1;
+    private AudioSource hitSound;
+
+    private void Start()
+    {
+        hitSound = GetComponent<AudioSource>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
+            hitSound.Play();
+
             Instantiate(hitParticles, transform.position, Quaternion.identity);
 
             health--;

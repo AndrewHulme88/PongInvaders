@@ -11,6 +11,7 @@ public class Ball : MonoBehaviour
     
     private Rigidbody2D rb;
     private bool isLaunched = false;
+    private AudioSource hitSound;
 
     private void Awake()
     {
@@ -19,6 +20,8 @@ public class Ball : MonoBehaviour
 
     private void Start()
     {
+        hitSound = GetComponent<AudioSource>();
+
         ResetBall();
     }
 
@@ -66,6 +69,7 @@ public class Ball : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bottom"))
         {
+            collision.gameObject.GetComponent<AudioSource>().Play();
             FindFirstObjectByType<CameraController>().ShakeCamera();
             GameManager.Instance.LoseLife();
             ResetBall();
@@ -101,6 +105,11 @@ public class Ball : MonoBehaviour
             dir.x = Mathf.Sign(dir.x) * Mathf.Sqrt(1f - dir.y * dir.y);
 
             rb.linearVelocity = dir * speed;
+        }
+
+        if (isLaunched && !collision.gameObject.CompareTag("Bottom") && !collision.gameObject.CompareTag("Enemy"))
+        {
+            hitSound.Play();
         }
     }
 }
