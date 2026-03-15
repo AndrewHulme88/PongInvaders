@@ -3,12 +3,16 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] int scoreValue = 100;
+    [SerializeField] GameObject hitParticles;
+
     public int health = 1;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball"))
         {
+            Instantiate(hitParticles, transform.position, Quaternion.identity);
+
             health--;
             if (health <= 0)
             {

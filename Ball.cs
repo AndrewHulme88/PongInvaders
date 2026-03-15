@@ -66,6 +66,7 @@ public class Ball : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bottom"))
         {
+            FindFirstObjectByType<CameraController>().ShakeCamera();
             GameManager.Instance.LoseLife();
             ResetBall();
         }

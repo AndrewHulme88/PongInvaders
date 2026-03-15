@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float invulnerabilityDuration = 0.75f;
     [SerializeField] private Ball ball;
+    [SerializeField] private GameObject hitParticles;
 
     private Rigidbody2D rb;
     private float moveInput;
@@ -65,7 +66,10 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("EnemyBullet") && !isInvulnerable)
         {
+            FindFirstObjectByType<CameraController>().ShakeCamera();
             StartCoroutine(HitRoutine());
+
+            Instantiate(hitParticles, transform.position, Quaternion.identity);
 
             Ball ball = FindFirstObjectByType<Ball>();
 
