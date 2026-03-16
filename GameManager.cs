@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public enum GameState { Playing, Paused, GameOver }
+    public bool isTransitioning { get; private set; }
+
+    [SerializeField] private float endLevelDelay = 1f;
 
     public GameState currentState;
     public int playerLives = 3;
@@ -45,8 +48,19 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        StopAllCoroutines();
+
+        isTransitioning = false;
         Time.timeScale = 1f;
         SetState(GameState.Playing);
+
+        if(UIManager.Instance != null)
+        {
+            UIManager.Instance.HidePauseScreen();
+            UIManager.Instance.HideLevelEndScreen();
+            UIManager.Instance.UpdateLives(playerLives);
+            UIManager.Instance.UpdateScore(score);
+        }
     }
 
     public void OnPause()
@@ -83,15 +97,53 @@ public class GameManager : MonoBehaviour
 
     public void LevelEnd()
     {
-        FindFirstObjectByType<BackgroundMusic>().StopMusic();
-        SetState(GameState.Paused);
+        if (isTransitioning)
+        {
+            return;
+        }
+
+        StartCoroutine(EndLevelCoroutine());
+    }
+
+    private IEnumerator EndLevelCoroutine()
+    {
+        isTransitioning = true;
+        FreezeGameplay();
+
+        yield return new WaitForSeconds(endLevelDelay);
+
         UIManager.Instance.ShowLevelEndScreen(score, playerLives);
     }
 
     public void GameOver()
     {
+        StartCoroutine(GameOverCoroutine());
+    }
+
+    private IEnumerator GameOverCoroutine()
+    {
+        isTransitioning = true;
+        FreezeGameplay();
+        yield return new WaitForSeconds(endLevelDelay);
+
         HighScoreManager.Instance.AddScore(score);
+        UnfreezeGameplay();
         SceneManager.LoadScene("GameOver");
+    }
+
+    private void FreezeGameplay()
+    {
+        Ball ball = FindFirstObjectByType<Ball>();
+
+        if (ball != null)
+        {
+            ball.FreezeBall();
+        }
+    }
+
+    public void UnfreezeGameplay()
+    {
+        isTransitioning = false;
     }
 
     public void SetState(GameState newState)
@@ -109,7 +161,6 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.GameOver:
-                Time.timeScale = 0f;
                 GameOver();
                 break;
         }

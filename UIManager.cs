@@ -77,8 +77,15 @@ public class UIManager : MonoBehaviour
         levelEndLivesText.text = "Lives: " + lives;
     }
 
+    public void HideLevelEndScreen()
+    {
+        levelEndPanel.SetActive(false);
+    }
+
     public void LoadNextLevel()
     {
+        GameManager.Instance.UnfreezeGameplay();
+
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
         if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)

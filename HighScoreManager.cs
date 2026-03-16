@@ -77,4 +77,10 @@ public class HighScoreManager : MonoBehaviour
 
         highScores.Sort((a, b) => b.CompareTo(a)); // Ensure scores are sorted
     }
+
+    public void ClearHighScores()
+    {
+        highScores.Clear();
+        PlayerPrefs.DeleteKey(HighScoreKey);
+    }
 }

@@ -19,4 +19,14 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
         Debug.Log("Quit Game");
     }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void OpenHighScores()
+    {
+        SceneManager.LoadScene("HighScores");
+    }
 }

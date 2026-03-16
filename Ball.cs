@@ -12,6 +12,7 @@ public class Ball : MonoBehaviour
     private Rigidbody2D rb;
     private bool isLaunched = false;
     private AudioSource hitSound;
+    private bool isFrozen = false;
 
     private void Awake()
     {
@@ -27,7 +28,12 @@ public class Ball : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(GameManager.Instance.currentState != GameManager.GameState.Playing)
+        if (isFrozen)
+        {
+            return;
+        }
+
+        if (GameManager.Instance.currentState != GameManager.GameState.Playing)
         {
             rb.linearVelocity = Vector2.zero;
             return;
@@ -63,6 +69,19 @@ public class Ball : MonoBehaviour
     {
         isLaunched = false;
         rb.linearVelocity = Vector2.zero;
+    }
+
+    public void FreezeBall()
+    {
+        isFrozen = true;
+        rb.linearVelocity = Vector2.zero;
+        rb.simulated = false;
+    }
+
+    public void UnfreezeBall()
+    {
+        isFrozen = false;
+        rb.simulated = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

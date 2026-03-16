@@ -30,6 +30,12 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+
+        if (UIManager.Instance.levelEndPanel.activeInHierarchy && Input.GetKeyDown(KeyCode.Return))
+        {
+            UIManager.Instance.LoadNextLevel();
+            return;
+        }
     }
 
     private void FixedUpdate()
@@ -60,7 +66,6 @@ public class PlayerController : MonoBehaviour
         {
             ball.LaunchBall();
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
