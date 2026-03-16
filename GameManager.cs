@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        HighScoreManager.Instance.AddScore(score);
         SceneManager.LoadScene("GameOver");
     }
 
