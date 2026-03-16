@@ -56,11 +56,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if(UIManager.Instance.isIntroTextRemoved == false)
-        {
-            UIManager.Instance.RemoveIntroText();
-        }
-
         if (ball != null)
         {
             ball.LaunchBall();

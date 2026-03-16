@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
 
     public void LevelEnd()
     {
+        FindFirstObjectByType<BackgroundMusic>().StopMusic();
         SetState(GameState.Paused);
         UIManager.Instance.ShowLevelEndScreen(score, playerLives);
     }

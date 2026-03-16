@@ -7,14 +7,12 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [SerializeField] private GameObject pausePanel;
-    [SerializeField] private GameObject introText;
 
     public GameObject levelEndPanel;
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI levelEndScoreText;
     public TextMeshProUGUI levelEndLivesText;
-    public bool isIntroTextRemoved = false;
 
     void Awake()
     {
@@ -33,20 +31,6 @@ public class UIManager : MonoBehaviour
         pausePanel.SetActive(false);
         UpdateLives(GameManager.Instance.playerLives);
         UpdateScore(GameManager.Instance.score);
-    }
-
-    public void RemoveIntroText()
-    {
-        if (isIntroTextRemoved)
-        {
-            return;
-        }
-
-        if (introText != null)
-        {
-            introText.SetActive(false);
-            isIntroTextRemoved = true;
-        }
     }
 
     public void UpdateLives(int lives)
