@@ -96,8 +96,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("No more levels! Returning to main menu.");
-            LoadMainMenu();
+            LoadWinScreen();
         }
     }
 
@@ -109,5 +108,10 @@ public class UIManager : MonoBehaviour
     public void ShowGameOver()
     {
         Debug.Log("Game Over! Final Score: " + scoreText.text);
+    }
+
+    public void LoadWinScreen()
+    {
+        SceneManager.LoadScene("WinScreen");
     }
 }
