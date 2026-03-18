@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -87,6 +88,19 @@ public class PlayerController : MonoBehaviour
 
             GameManager.Instance.LoseLife();
             Destroy(collision.gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            hitSound.Play();
+            FindFirstObjectByType<CameraController>().ShakeCamera();
+
+            Instantiate(hitParticles, transform.position, Quaternion.identity);
+
+            GameManager.Instance.GameOver();
         }
     }
 
